@@ -31,14 +31,21 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt << EOF
 echo ${hostname} >> /etc/hostname
-
-useradd -a -G wheel -s /bin/bash ${username}
+useradd -m -G wheel,users,video,audio,storage,power -s /bin/bash ${username}
 echo "${uname}:${userpass}" | chpasswd
 
 
 
 
-pacman -Syu --noconfirm hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-ctl pavucontrol bluez bluez-utils networkmanager grub os-prober
+pacman -Syu --noconfirm hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-ctl pavucontrol bluez bluez-utils networkmanager archlinux-keyring
+
+rm -r /etc/pacman.d/gnupg
+pacman-key --init
+pacman-key --populate archlinux
+pacman -Syyu
+
+
+pacman -S --noconfirm grub
 systemctl restart NetworkManager
 systemctl restart pulseaudio.service
 systemctl restart bluetooth
