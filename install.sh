@@ -45,7 +45,7 @@ pacman-key --populate archlinux
 pacman -Syyu
 
 
-pacman -S --noconfirm grub
+pacman -S --noconfirm grub efibootmgr
 systemctl restart NetworkManager
 systemctl restart pulseaudio.service
 systemctl restart bluetooth
