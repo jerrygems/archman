@@ -1,3 +1,4 @@
+umount -R /mnt
 read -p "enter the disk on which to apply(e.g. /dev/sdx): " disk
 read -p "enter the hostname for the setup(e.g. anyname): " hostname
 read -p "enter the password for root(e.g. @p455w0rd123): " password
@@ -23,7 +24,7 @@ mkdir -p /mnt/boot/
 mount ${disk}1 /mnt/boot/
 swapon ${disk}3
 
-pacstrap -K /mnt base linux linux-firmware hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-cli pavucontrol bluez bluez-utils networkmanager archlinux-keyring sddm sudo nano neovim
+pacstrap -K /mnt base linux linux-firmware hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pavucontrol bluez bluez-utils networkmanager archlinux-keyring sddm sudo nano neovim
 
 # creating the table and saving inside the /mnt/etc/fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -36,14 +37,12 @@ useradd -m -G wheel,users,video,audio,storage,power -s /bin/bash ${username}
 echo "${username}:${userpass}" | chpasswd
 
 
-
-
-pacman -Syu --noconfirm archlinux-keyring
+pacman -Sy --noconfirm archlinux-keyring
 
 rm -r /etc/pacman.d/gnupg
 pacman-key --init
 pacman-key --populate archlinux
-pacman -Syyu
+pacman -Syu
 
 
 pacman -S --noconfirm grub efibootmgr
@@ -60,8 +59,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 exit
 EOF
 
-umount -R /mnt
-reboot
+#umount -R /mnt
+#reboot
 
 
 
