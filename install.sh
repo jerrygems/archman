@@ -30,6 +30,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 
 arch-chroot /mnt << EOF
+pacman -Sy
 echo ${hostname} >> /etc/hostname
 useradd -m -G wheel,users,video,audio,storage,power -s /bin/bash ${username}
 echo "${username}:${userpass}" | chpasswd
