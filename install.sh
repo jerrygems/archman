@@ -1,7 +1,7 @@
-read -p "enter the disk on which to apply: " disk
-read -p "enter the hostname for the setup: " hostname
-read -p "enter the password for root: " password
-read -p "enter the new user's name: " uname
+read -p "enter the disk on which to apply(e.g. /dev/sdx): " disk
+read -p "enter the hostname for the setup(e.g. anyname): " hostname
+read -p "enter the password for root(e.g. @p455w0rd123): " password
+read -p "enter the new user's name: " username
 read -p "password for the new user: " userpass
 umount ${disk} 2>/dev/null
 parted ${disk} mklabel gpt # clearing partition
@@ -32,7 +32,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt << EOF
 echo ${hostname} >> /etc/hostname
 useradd -m -G wheel,users,video,audio,storage,power -s /bin/bash ${username}
-echo "${uname}:${userpass}" | chpasswd
+echo "${username}:${userpass}" | chpasswd
 
 
 
