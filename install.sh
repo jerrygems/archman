@@ -46,10 +46,10 @@ pacman -Syu
 
 
 pacman -S --noconfirm grub efibootmgr
-systemctl enable sddm
-systemctl enable NetworkManager
-systemctl enable pulseaudio.service
-systemctl enable bluetooth
+systemctl restart sddm
+systemctl restart NetworkManager
+systemctl restart pulseaudio.service
+systemctl restart bluetooth
 
 echo "root:${password}" | chpasswd
 
