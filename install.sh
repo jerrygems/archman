@@ -23,7 +23,7 @@ mkdir -p /mnt/boot/
 mount ${disk}1 /mnt/boot/
 swapon ${disk}3
 
-pacstrap -K /mnt base linux linux-firmware
+pacstrap -K /mnt base linux linux-firmware hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-cli pavucontrol bluez bluez-utils networkmanager archlinux-keyring sddm sudo nano neovim
 
 # creating the table and saving inside the /mnt/etc/fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -38,7 +38,7 @@ echo "${username}:${userpass}" | chpasswd
 
 
 
-pacman -Syu --noconfirm hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-ctl pavucontrol bluez bluez-utils networkmanager archlinux-keyring sddm neovim sudo nano
+pacman -Syu --noconfirm archlinux-keyring
 
 rm -r /etc/pacman.d/gnupg
 pacman-key --init
