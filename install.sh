@@ -37,7 +37,7 @@ echo "${username}:${userpass}" | chpasswd
 
 
 
-pacman -Syu --noconfirm hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-ctl pavucontrol bluez bluez-utils networkmanager archlinux-keyring
+pacman -Syu --noconfirm hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pulseaudio-ctl pavucontrol bluez bluez-utils networkmanager archlinux-keyring sddm neovim nano
 
 rm -r /etc/pacman.d/gnupg
 pacman-key --init
@@ -59,7 +59,7 @@ exit
 EOF
 
 umount -R /mnt
-# reboot
+reboot
 
 
 
