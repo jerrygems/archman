@@ -1,28 +1,38 @@
 umount -R /mnt
 read -p "enter the disk on which to apply(e.g. /dev/sdx): " disk
+read -p "enter the efi partition size(e.g. 512 Integer):" efi_size
+read -p "enter the swap partition size(e.g. 4096 Integer)" swap_size
 read -p "enter the hostname for the setup(e.g. anyname): " hostname
 read -p "enter the password for root(e.g. @p455w0rd123): " password
 read -p "enter the new user's name: " username
 read -p "password for the new user: " userpass
+
+
+disk_size=$(echo "$(lsblk -bndo SIZE ${disk})/1024/1024" | bc) # MB
+EFI_PART=$efi_size # MB
+SWAP_PART=$swap_size # MB
+
+
 umount ${disk} 2>/dev/null
 parted ${disk} mklabel gpt # clearing partition
-parted ${disk} mkpart primary fat32 1MB 513MB # creating EFI
+parted ${disk} mkpart primary fat32 0MB ${EFI_PART}MB # creating EFI
 parted ${disk} set 1 esp on # assigning the EFI flag here
 
-parted ${disk} mkpart primary ext4 513MB 210513MB # creating root partition
-parted ${disk} mkpart primary linux-swap 210513MB 215513 # creating the swap partition here
+parted ${disk} mkpart primary linux-swap ${EFI_PART}MB $(echo ${EFI_PART}+${SWAP_PART} | bc) # creating the swap partition here
+
+parted ${disk} mkpart primary ext4 $(echo "${EFI_PART}+${SWAP_PART}" | bc)MB ${disk_size} # creating root partition
 
 partprobe ${disk} # inform the OS about changed partition table
 
 #formatting partitions
 mkfs.fat -F32 ${disk}1
-mkfs.ext4 ${disk}2
+mkfs.ext4 ${disk}3
 
 # mount the root partition 
-mount ${disk}2 /mnt/
+mount ${disk}3 /mnt/
 mkdir -p /mnt/boot/
 mount ${disk}1 /mnt/boot/
-swapon ${disk}3
+swapon ${disk}2
 
 pacstrap -K /mnt base linux linux-firmware hyprland waybar wofi swaybg swaylock alacritty grim pulseaudio pavucontrol bluez bluez-utils networkmanager archlinux-keyring sddm sudo nano neovim
 
