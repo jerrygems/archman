@@ -15,12 +15,12 @@ SWAP_PART=$swap_size # MB
 
 umount ${disk} 2>/dev/null
 parted ${disk} mklabel gpt # clearing partition
-parted ${disk} mkpart primary fat32 0MB ${EFI_PART}MB # creating EFI
+parted ${disk} mkpart primary fat32 1MiB ${EFI_PART}MiB # creating EFI
 parted ${disk} set 1 esp on # assigning the EFI flag here
 
-parted ${disk} mkpart primary linux-swap ${EFI_PART}MB $(echo ${EFI_PART}+${SWAP_PART} | bc) # creating the swap partition here
+parted ${disk} mkpart primary linux-swap ${EFI_PART}MiB $(echo ${EFI_PART}+${SWAP_PART} | bc)MiB # creating the swap partition here
 
-parted ${disk} mkpart primary ext4 $(echo "${EFI_PART}+${SWAP_PART}" | bc)MB ${disk_size} # creating root partition
+parted ${disk} mkpart primary ext4 $(echo "${EFI_PART}+${SWAP_PART}" | bc)MiB ${disk_size}MiB # creating root partition
 
 partprobe ${disk} # inform the OS about changed partition table
 
