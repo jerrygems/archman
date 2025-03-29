@@ -51,7 +51,9 @@ if [[ $? -ne 0 ]]; then echo "Failed while applying changes for the partitions";
 
 #formatting partitions
 mkfs.fat -F32 ${disk}1
+mkswap ${disk}2
 mkfs.ext4 ${disk}3
+if [[ $? -ne 0 ]]; then echo "Failed while formatting partition."; exit 1; fi
 
 # mount the root partition 
 mount ${disk}3 /mnt/
