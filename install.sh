@@ -25,10 +25,10 @@ if ! [[ "$swap_size" =~ ^[0-9]+$ ]]; then
   exit 1;
 fi
 
-disk_size=$(echo "$(lsblk -bndo SIZE ${disk})/1024/1024" | bc) # MB
+disk_size=$(echo "($(lsblk -bndo SIZE ${disk})/1024/1024)-1" | bc) # MB
 EFI_PART=$efi_size # MB
 SWAP_PART=$swap_size # MB
-echo "[ DISK SIZE\t\t<==>\t\t[$disk_size] ] \n[ EFI PARTITION\t\t<==>\t\t[$EFI_PART] ] \n[ SWAP PARTITION\t\t<==>\t\t[$SWAP_PART] ]";
+echo -e "[ DISK SIZE\t\t<==>\t\t[$disk_size] ] \n[ EFI PARTITION\t\t<==>\t\t[$EFI_PART] ] \n[ SWAP PARTITION\t\t<==>\t\t[$SWAP_PART] ]";
 
 parted ${disk} mklabel gpt # clearing partition
 if [[ $? -ne 0 ]]; then echo "Failed while clearing partition"; exit 1; fi
