@@ -7,6 +7,20 @@ read -p "enter the password for root(e.g. @p455w0rd123): " password
 read -p "enter the new user's name: " username
 read -p "password for the new user: " userpass
 
+if ![[ -b "$disk" ]]; then
+  echo "Specified invalid disk. Please specify correct disk.";
+  exit 1;
+fi
+
+if ![[ "$efi_size" =~ ^[0-9]+$ ]]; then
+  echo "only integer should be specified for EFI partition.";
+  exit 1;
+fi
+
+if ![[ "$swap_size" =~ ^[0-9]+$ ]]; then 
+  echo "only integer should be specified for the swap partition";
+  exit 1;
+fi
 
 disk_size=$(echo "$(lsblk -bndo SIZE ${disk})/1024/1024" | bc) # MB
 EFI_PART=$efi_size # MB
