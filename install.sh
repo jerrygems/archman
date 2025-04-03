@@ -5,6 +5,10 @@ read -p "enter the hostname for the setup(e.g. anyname) : " hostname
 read -p "enter the password for root(e.g. @p455w0rd123) : " password
 read -p "enter the new user's name : " username
 read -p "password for the new user : " userpass
+read -p "enter the country name : " country
+
+reflector --country "India" --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+sudo sed -i 's/^#ParallelDownloads = [0-9]\+/ParallelDownloads = 15/' /etc/pacman.conf
 
 umount -R /mnt || true
 umount -R "${disk}"* 2>/dev/null || true
