@@ -7,7 +7,8 @@ read -p "enter the new user's name : " username
 read -p "password for the new user : " userpass
 read -p "enter the country name : " country
 
-reflector --country "India" --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+reflector --country $country --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+pacman -Syyu
 sudo sed -i 's/^#ParallelDownloads = [0-9]\+/ParallelDownloads = 15/' /etc/pacman.conf
 
 umount -R /mnt || true
